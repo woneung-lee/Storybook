@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🎨 이어쓰기 게임</title>
+    <title>🎨 만화책 이어쓰기 게임</title>
     <meta name="description" content="초등학생을 위한 협동 학습형 실시간 이야기 만들기 게임">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Dongle:wght@400;700&family=Gaegu:wght@400;700&display=swap');
@@ -381,6 +381,30 @@
             gap: 20px;
         }
 
+        .current-topic-display {
+            background: linear-gradient(135deg, #FFE66D 0%, #FFD93D 100%);
+            border: 5px solid #000;
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .current-topic-label {
+            font-size: 22px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 10px;
+        }
+
+        .current-topic-text {
+            font-size: 28px;
+            font-weight: 700;
+            color: #5f27cd;
+            font-family: 'Dongle', cursive;
+        }
+
         .team-comic-panel {
             background: white;
             border: 5px solid #000;
@@ -388,6 +412,13 @@
             padding: 20px;
             box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
             position: relative;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .team-comic-panel:hover {
+            transform: translateY(-5px);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.3);
         }
 
         .team-badge {
@@ -424,6 +455,149 @@
             overflow-y: auto;
             font-size: 16px;
             line-height: 1.6;
+        }
+
+        /* 모달 스타일 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            border: 6px solid #000;
+            border-radius: 20px;
+            margin: 3% auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 1000px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 10px 10px 0 rgba(0,0,0,0.5);
+            animation: slideDown 0.3s;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 4px solid #000;
+            padding-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: #5f27cd;
+            font-family: 'Dongle', cursive;
+        }
+
+        .close-btn {
+            background: #ff4757;
+            color: white;
+            border: 4px solid #000;
+            padding: 10px 20px;
+            border-radius: 15px;
+            font-size: 24px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Dongle', cursive;
+        }
+
+        .close-btn:hover {
+            background: #ee5a6f;
+        }
+
+        .team-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            border: 4px solid #000;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .stat-label {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            font-family: 'Dongle', cursive;
+        }
+
+        .author-stats {
+            background: #FFF9E6;
+            border: 4px solid #000;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .author-stats-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-family: 'Dongle', cursive;
+        }
+
+        .author-stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 8px;
+            background: white;
+            border: 3px solid #000;
+            border-radius: 10px;
+        }
+
+        .author-stat-name {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .author-stat-count {
+            background: #4ECDC4;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            border: 2px solid #000;
+            font-weight: 700;
         }
 
         .student-view {
@@ -566,6 +740,11 @@
             background: #FFD93D;
         }
 
+        .edit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .input-area {
             background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
             border: 5px solid #000;
@@ -598,6 +777,11 @@
             background: #FF6B6B;
             color: white;
             animation: pulse 1.5s infinite;
+        }
+
+        .writing-status.my-turn {
+            background: #4ECDC4;
+            color: white;
         }
 
         @keyframes pulse {
@@ -726,6 +910,16 @@
             .header-bar {
                 justify-content: center;
             }
+
+            .modal-content {
+                width: 95%;
+                margin: 5% auto;
+                padding: 20px;
+            }
+
+            .team-stats {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -848,6 +1042,13 @@
                     <!-- 팀 모니터링 -->
                     <div>
                         <h2 class="panel-title" style="margin-bottom: 20px;">📊 실시간 모니터링</h2>
+                        
+                        <!-- 현재 주제 표시 -->
+                        <div id="currentTopicDisplay" class="current-topic-display hidden">
+                            <div class="current-topic-label">💡 현재 주제</div>
+                            <div class="current-topic-text" id="currentTopicText">-</div>
+                        </div>
+
                         <div id="teamsMonitor" class="teams-monitor"></div>
                     </div>
                 </div>
@@ -870,7 +1071,7 @@
                 <div class="input-area">
                     <h3 class="input-title">✍️ 내 차례!</h3>
                     <div id="writingStatus" class="writing-status">
-                        다른 친구가 입력 중이에요... 잠시만 기다려주세요!
+                        게임이 시작되기를 기다리는 중...
                     </div>
                     <textarea id="storyInput" class="story-input" placeholder="여기에 한 문장을 적어보세요..." disabled></textarea>
                     <div class="action-buttons">
@@ -883,6 +1084,37 @@
         </div>
     </div>
 
+    <!-- 조별 상세보기 모달 -->
+    <div id="teamDetailModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTeamTitle">1조 상세보기</h2>
+                <button class="close-btn" onclick="closeTeamDetail()">✕ 닫기</button>
+            </div>
+
+            <!-- 통계 -->
+            <div class="team-stats">
+                <div class="stat-card">
+                    <div class="stat-label">총 문장 수</div>
+                    <div class="stat-value" id="modalTotalSentences">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">참여 인원</div>
+                    <div class="stat-value" id="modalMemberCount">0명</div>
+                </div>
+            </div>
+
+            <!-- 작성자별 통계 -->
+            <div class="author-stats">
+                <h3 class="author-stats-title">👥 작성자별 통계</h3>
+                <div id="authorStatsList"></div>
+            </div>
+
+            <!-- 이야기 내용 -->
+            <div id="modalStoryContent" class="sentences-container" style="max-height: 500px;"></div>
+        </div>
+    </div>
+
     <!-- 알림 영역 -->
     <div id="notificationArea"></div>
 
@@ -891,10 +1123,8 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
     <script>
-        // ==========================================
-        // 🔥 Firebase 설정 (여기에 본인의 Firebase 설정을 입력하세요!)
-        // ==========================================
-        const firebaseConfig = {
+        // Firebase 설정
+const firebaseConfig = {
   apiKey: "AIzaSyBuTvxrgJIWVhBQtTz3FZWScfE-4tIgUkQ",
   authDomain: "storybook-ad93a.firebaseapp.com",
   databaseURL: "https://storybook-ad93a-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -904,11 +1134,9 @@
   appId: "1:732882396160:web:6210b8074c8656aba264e5"
 };
 
-        // Firebase 초기화
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
-        // 게임 상태
         let currentUser = {
             role: null,
             name: null,
@@ -916,8 +1144,8 @@
         };
 
         let editingMessageId = null;
+        let teamMembers = {};
 
-        // 역할 선택
         window.selectRole = function(role) {
             currentUser.role = role;
             document.getElementById('loginForm').classList.remove('hidden');
@@ -931,7 +1159,6 @@
             }
         };
 
-        // 선생님 로그인
         window.teacherLogin = function() {
             const password = document.getElementById('teacherPassword').value;
             
@@ -946,7 +1173,6 @@
             }
         };
 
-        // 학생 로그인
         window.studentLogin = function() {
             const name = document.getElementById('studentName').value.trim();
             
@@ -972,7 +1198,6 @@
             });
         };
 
-        // 게임 화면 표시
         function showGameScreen(role) {
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('gameScreen').style.display = 'block';
@@ -984,7 +1209,6 @@
             }
         }
 
-        // 학생 추가
         window.addStudent = function() {
             const name = document.getElementById('newStudentName').value.trim();
             const team = document.getElementById('studentTeam').value;
@@ -1008,14 +1232,19 @@
             });
         };
 
-        // 학생 목록 로드
         function loadStudents() {
             database.ref('students').on('value', (snapshot) => {
                 const students = snapshot.val() || {};
                 const studentList = document.getElementById('studentList');
                 studentList.innerHTML = '';
 
+                teamMembers = {};
                 Object.values(students).forEach(student => {
+                    if (!teamMembers[student.team]) {
+                        teamMembers[student.team] = [];
+                    }
+                    teamMembers[student.team].push(student.name);
+
                     const div = document.createElement('div');
                     div.className = 'student-item';
                     div.innerHTML = `
@@ -1030,7 +1259,6 @@
             });
         }
 
-        // 학생 삭제
         window.deleteStudent = function(studentId) {
             if (confirm('정말 삭제하시겠습니까?')) {
                 database.ref('students/' + studentId).remove().then(() => {
@@ -1039,7 +1267,6 @@
             }
         };
 
-        // 주제 설정
         window.setTopic = function() {
             const topic = document.getElementById('storyTopic').value.trim();
             
@@ -1053,14 +1280,20 @@
             });
         };
 
-        // 게임 시작
         window.startGame = function() {
             database.ref('game/status').set('playing').then(() => {
+                for (let team = 1; team <= 5; team++) {
+                    if (teamMembers[team] && teamMembers[team].length > 0) {
+                        database.ref(`turnOrder/team${team}`).set({
+                            currentTurn: 0,
+                            members: teamMembers[team]
+                        });
+                    }
+                }
                 showNotification('게임이 시작되었습니다! 🚀', 'success');
             });
         };
 
-        // 게임 초기화
         window.resetGame = function() {
             if (confirm('정말 게임을 초기화하시겠습니까? 모든 내용이 삭제됩니다.')) {
                 database.ref('stories').remove();
@@ -1069,12 +1302,25 @@
                     topic: ''
                 });
                 database.ref('activeWriters').remove();
+                database.ref('turnOrder').remove();
                 showNotification('게임이 초기화되었습니다! 🔄', 'success');
             }
         };
 
-        // 팀 모니터링
         function startMonitoring() {
+            database.ref('game/topic').on('value', (snapshot) => {
+                const topic = snapshot.val();
+                const display = document.getElementById('currentTopicDisplay');
+                const text = document.getElementById('currentTopicText');
+                
+                if (topic) {
+                    display.classList.remove('hidden');
+                    text.textContent = topic;
+                } else {
+                    display.classList.add('hidden');
+                }
+            });
+
             database.ref('stories').on('value', (snapshot) => {
                 const stories = snapshot.val() || {};
                 const monitor = document.getElementById('teamsMonitor');
@@ -1085,30 +1331,25 @@
                     
                     const panel = document.createElement('div');
                     panel.className = 'team-comic-panel';
+                    panel.onclick = () => showTeamDetail(team);
                     
-                    const members = [];
-                    database.ref('students').orderByChild('team').equalTo(team.toString()).once('value', (snap) => {
-                        snap.forEach(child => {
-                            members.push(child.val().name);
-                        });
-                    });
+                    const members = teamMembers[team] || [];
 
-                    setTimeout(() => {
-                        panel.innerHTML = `
-                            <div class="team-badge">${team}조</div>
-                            <div class="team-content">
-                                <div class="team-members-list">
-                                    👥 ${members.join(', ') || '없음'}
-                                </div>
-                                <div class="story-preview">
-                                    ${teamStories.length > 0 ? 
-                                        teamStories.map(s => `<p><strong>${s.author}:</strong> ${s.text}</p>`).join('') :
-                                        '<p style="color: #95a5a6;">아직 작성된 문장이 없습니다.</p>'
-                                    }
-                                </div>
+                    panel.innerHTML = `
+                        <div class="team-badge">${team}조</div>
+                        <div class="team-content">
+                            <div class="team-members-list">
+                                👥 ${members.join(', ') || '없음'}
                             </div>
-                        `;
-                    }, 100);
+                            <div class="story-preview">
+                                ${teamStories.length > 0 ? 
+                                    teamStories.slice(0, 3).map(s => `<p><strong>${s.author}:</strong> ${s.text}</p>`).join('') + 
+                                    (teamStories.length > 3 ? '<p style="color: #95a5a6;">...클릭해서 더보기</p>' : '') :
+                                    '<p style="color: #95a5a6;">아직 작성된 문장이 없습니다.</p>'
+                                }
+                            </div>
+                        </div>
+                    `;
 
                     monitor.appendChild(panel);
                 }
@@ -1123,7 +1364,88 @@
             });
         }
 
-        // 학생 화면 - 팀 스토리 로드
+        window.showTeamDetail = function(team) {
+            document.getElementById('modalTeamTitle').textContent = `${team}조 상세보기`;
+            
+            database.ref('stories').orderByChild('team').equalTo(team).once('value', (snapshot) => {
+                const stories = [];
+                snapshot.forEach(child => {
+                    stories.push({...child.val(), id: child.key});
+                });
+
+                stories.sort((a, b) => a.timestamp - b.timestamp);
+
+                const totalSentences = stories.length;
+                const members = teamMembers[team] || [];
+                const authorCounts = {};
+
+                stories.forEach(story => {
+                    authorCounts[story.author] = (authorCounts[story.author] || 0) + 1;
+                });
+
+                document.getElementById('modalTotalSentences').textContent = totalSentences;
+                document.getElementById('modalMemberCount').textContent = members.length + '명';
+
+                const authorStatsList = document.getElementById('authorStatsList');
+                authorStatsList.innerHTML = '';
+                
+                const sortedAuthors = Object.entries(authorCounts).sort((a, b) => b[1] - a[1]);
+                
+                sortedAuthors.forEach(([author, count]) => {
+                    const item = document.createElement('div');
+                    item.className = 'author-stat-item';
+                    item.innerHTML = `
+                        <span class="author-stat-name">${author}</span>
+                        <span class="author-stat-count">${count}문장</span>
+                    `;
+                    authorStatsList.appendChild(item);
+                });
+
+                members.forEach(member => {
+                    if (!authorCounts[member]) {
+                        const item = document.createElement('div');
+                        item.className = 'author-stat-item';
+                        item.style.opacity = '0.5';
+                        item.innerHTML = `
+                            <span class="author-stat-name">${member}</span>
+                            <span class="author-stat-count">0문장</span>
+                        `;
+                        authorStatsList.appendChild(item);
+                    }
+                });
+
+                const content = document.getElementById('modalStoryContent');
+                content.innerHTML = '';
+
+                stories.forEach(story => {
+                    const bubble = document.createElement('div');
+                    bubble.className = 'speech-bubble';
+                    bubble.innerHTML = `
+                        <div class="author-tag">${story.author}</div>
+                        <div class="sentence-text">${story.text}</div>
+                    `;
+                    content.appendChild(bubble);
+                });
+
+                if (stories.length === 0) {
+                    content.innerHTML = '<p style="text-align: center; color: #95a5a6; padding: 40px;">아직 작성된 문장이 없습니다.</p>';
+                }
+
+                document.getElementById('teamDetailModal').style.display = 'block';
+            });
+        };
+
+        window.closeTeamDetail = function() {
+            document.getElementById('teamDetailModal').style.display = 'none';
+        };
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('teamDetailModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        };
+
         function loadTeamStory() {
             const team = currentUser.team;
             document.getElementById('teamTitle').textContent = `${team}조 이야기책 📖`;
@@ -1164,39 +1486,66 @@
             });
         }
 
-        // 학생 모니터링
         function startStudentMonitoring() {
-            database.ref('activeWriters').on('value', (snapshot) => {
-                const writers = snapshot.val() || {};
-                const teamWriters = Object.values(writers).filter(w => w.team == currentUser.team && w.name !== currentUser.name);
+            const team = currentUser.team;
 
-                const status = document.getElementById('writingStatus');
-                const input = document.getElementById('storyInput');
-                const submitBtn = document.getElementById('submitBtn');
-
-                if (teamWriters.length > 0) {
-                    status.textContent = `${teamWriters[0].name}님이 문장을 쓰고 있어요... ✍️`;
-                    status.classList.add('active');
-                    input.disabled = true;
-                    submitBtn.disabled = true;
-                } else {
-                    status.textContent = '지금 내 차례예요! 문장을 작성해주세요! 🎉';
-                    status.classList.remove('active');
-                    input.disabled = false;
-                    submitBtn.disabled = false;
+            database.ref(`turnOrder/team${team}`).on('value', (snapshot) => {
+                const turnData = snapshot.val();
+                
+                if (!turnData) {
+                    updateTurnStatus('게임이 시작되기를 기다리는 중...', false, false);
+                    return;
                 }
+
+                const members = turnData.members || [];
+                const currentTurnIndex = turnData.currentTurn || 0;
+                const currentTurnPlayer = members[currentTurnIndex % members.length];
+                const isMyTurn = currentTurnPlayer === currentUser.name;
+
+                database.ref('activeWriters').once('value', (writerSnapshot) => {
+                    const writers = writerSnapshot.val() || {};
+                    const teamWriters = Object.values(writers).filter(w => w.team == team && w.name !== currentUser.name);
+
+                    if (teamWriters.length > 0) {
+                        updateTurnStatus(`${teamWriters[0].name}님이 문장을 쓰고 있어요... ✍️`, false, true);
+                    } else if (isMyTurn) {
+                        updateTurnStatus('✨ 지금은 내 차례예요! 문장을 작성해주세요! 🎉', true, false);
+                    } else {
+                        updateTurnStatus(`${currentTurnPlayer}님의 차례입니다. 잠시만 기다려주세요!`, false, false);
+                    }
+                });
             });
 
             database.ref('game/status').on('value', (snapshot) => {
                 const status = snapshot.val();
                 if (status !== 'playing') {
-                    document.getElementById('storyInput').disabled = true;
-                    document.getElementById('submitBtn').disabled = true;
+                    updateTurnStatus('게임이 시작되기를 기다리는 중...', false, false);
                 }
             });
         }
 
-        // 문장 제출
+        function updateTurnStatus(message, canWrite, someoneWriting) {
+            const status = document.getElementById('writingStatus');
+            const input = document.getElementById('storyInput');
+            const submitBtn = document.getElementById('submitBtn');
+
+            status.textContent = message;
+            
+            if (canWrite) {
+                status.className = 'writing-status my-turn';
+                input.disabled = false;
+                submitBtn.disabled = false;
+            } else {
+                if (someoneWriting) {
+                    status.className = 'writing-status active';
+                } else {
+                    status.className = 'writing-status';
+                }
+                input.disabled = true;
+                submitBtn.disabled = true;
+            }
+        }
+
         window.submitSentence = function() {
             const text = document.getElementById('storyInput').value.trim();
             
@@ -1205,53 +1554,90 @@
                 return;
             }
 
-            if (editingMessageId) {
-                database.ref('stories/' + editingMessageId).update({
-                    text: text,
-                    edited: true,
-                    editedAt: Date.now()
-                }).then(() => {
-                    showNotification('문장이 수정되었습니다! ✅', 'success');
-                    document.getElementById('storyInput').value = '';
-                    editingMessageId = null;
-                    removeActiveWriter();
-                });
-            } else {
-                const storyId = Date.now().toString();
-                database.ref('stories/' + storyId).set({
-                    id: storyId,
-                    team: currentUser.team,
-                    author: currentUser.name,
-                    text: text,
-                    timestamp: Date.now()
-                }).then(() => {
-                    showNotification('문장이 제출되었습니다! 🎉', 'success');
-                    document.getElementById('storyInput').value = '';
-                    removeActiveWriter();
-                });
-            }
-        };
+            const team = currentUser.team;
 
-        // 문장 수정
-        window.editSentence = function(id, text) {
-            database.ref('activeWriters').once('value', (snapshot) => {
-                const writers = snapshot.val() || {};
-                const teamWriters = Object.values(writers).filter(w => w.team == currentUser.team && w.name !== currentUser.name);
+            database.ref(`turnOrder/team${team}`).once('value', (snapshot) => {
+                const turnData = snapshot.val();
+                if (!turnData) return;
 
-                if (teamWriters.length > 0) {
-                    showNotification(`${teamWriters[0].name}님이 입력 중이라 수정할 수 없어요! ⚠️`, 'warning');
-                    return;
+                const members = turnData.members || [];
+                const currentTurnIndex = turnData.currentTurn || 0;
+                const currentTurnPlayer = members[currentTurnIndex % members.length];
+
+                if (editingMessageId) {
+                    if (currentTurnPlayer !== currentUser.name) {
+                        showNotification('지금은 수정할 수 없어요! 내 차례를 기다려주세요. ⚠️', 'warning');
+                        return;
+                    }
+
+                    database.ref('stories/' + editingMessageId).update({
+                        text: text,
+                        edited: true,
+                        editedAt: Date.now()
+                    }).then(() => {
+                        showNotification('문장이 수정되었습니다! ✅', 'success');
+                        document.getElementById('storyInput').value = '';
+                        editingMessageId = null;
+                        removeActiveWriter();
+                    });
+                } else {
+                    if (currentTurnPlayer !== currentUser.name) {
+                        showNotification('지금은 내 차례가 아니에요! ⚠️', 'warning');
+                        return;
+                    }
+
+                    const storyId = Date.now().toString();
+                    database.ref('stories/' + storyId).set({
+                        id: storyId,
+                        team: team,
+                        author: currentUser.name,
+                        text: text,
+                        timestamp: Date.now()
+                    }).then(() => {
+                        database.ref(`turnOrder/team${team}/currentTurn`).set(currentTurnIndex + 1);
+                        
+                        showNotification('문장이 제출되었습니다! 🎉', 'success');
+                        document.getElementById('storyInput').value = '';
+                        removeActiveWriter();
+                    });
                 }
-
-                editingMessageId = id;
-                document.getElementById('storyInput').value = text;
-                document.getElementById('storyInput').focus();
-                setActiveWriter();
-                showNotification('문장을 수정하고 제출 버튼을 눌러주세요! ✏️', 'success');
             });
         };
 
-        // 입력 시작 표시
+        window.editSentence = function(id, text) {
+            const team = currentUser.team;
+
+            database.ref(`turnOrder/team${team}`).once('value', (turnSnapshot) => {
+                const turnData = turnSnapshot.val();
+                if (!turnData) return;
+
+                const members = turnData.members || [];
+                const currentTurnIndex = turnData.currentTurn || 0;
+                const currentTurnPlayer = members[currentTurnIndex % members.length];
+
+                if (currentTurnPlayer !== currentUser.name) {
+                    showNotification('수정은 내 차례일 때만 가능해요! ⚠️', 'warning');
+                    return;
+                }
+
+                database.ref('activeWriters').once('value', (snapshot) => {
+                    const writers = snapshot.val() || {};
+                    const teamWriters = Object.values(writers).filter(w => w.team == team && w.name !== currentUser.name);
+
+                    if (teamWriters.length > 0) {
+                        showNotification(`${teamWriters[0].name}님이 입력 중이라 수정할 수 없어요! ⚠️`, 'warning');
+                        return;
+                    }
+
+                    editingMessageId = id;
+                    document.getElementById('storyInput').value = text;
+                    document.getElementById('storyInput').focus();
+                    setActiveWriter();
+                    showNotification('문장을 수정하고 제출 버튼을 눌러주세요! ✏️', 'success');
+                });
+            });
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
             const input = document.getElementById('storyInput');
             if (input) {
@@ -1280,7 +1666,6 @@
             }
         }
 
-        // 헬퍼 함수들
         function updateStudentCount(count) {
             document.getElementById('studentCount').textContent = count + '명';
         }
