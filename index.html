@@ -284,8 +284,66 @@
         }
 
         .form-group textarea {
-            min-height: 100px;
+            min-height: 80px;
             resize: vertical;
+        }
+
+        .form-group.small-input input {
+            width: 80px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .counter-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .counter-btn {
+            background: linear-gradient(135deg, #4ECDC4 0%, #44A08D 100%);
+            color: white;
+            border: 4px solid #000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 28px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+        }
+
+        .counter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
+        }
+
+        .counter-btn:active {
+            transform: translateY(0);
+            box-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+        }
+
+        .counter-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .counter-display {
+            background: #FFF9E6;
+            border: 4px solid #000;
+            border-radius: 15px;
+            padding: 15px 30px;
+            font-size: 32px;
+            font-weight: 700;
+            font-family: 'Dongle', cursive;
+            min-width: 80px;
+            text-align: center;
         }
 
         .btn {
@@ -332,8 +390,13 @@
             color: white;
         }
 
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+        }
+
         .student-list {
-            max-height: 300px;
+            max-height: 200px;
             overflow-y: auto;
             margin-top: 15px;
         }
@@ -658,6 +721,29 @@
             padding: 10px;
         }
 
+        .view-all-story-btn {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .view-all-story-btn button {
+            background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+            color: white;
+            border: 4px solid #000;
+            padding: 12px 30px;
+            border-radius: 15px;
+            font-size: 22px;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Dongle', cursive;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.3);
+        }
+
+        .view-all-story-btn button:hover {
+            transform: translateY(-2px);
+            box-shadow: 6px 6px 0 rgba(0,0,0,0.3);
+        }
+
         .speech-bubble {
             position: relative;
             background: white;
@@ -784,6 +870,11 @@
             color: white;
         }
 
+        .writing-status.completed {
+            background: #95a5a6;
+            color: white;
+        }
+
         @keyframes pulse {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.05); }
@@ -854,6 +945,42 @@
         .notification.warning {
             background: linear-gradient(135deg, #FFE66D 0%, #FFD93D 100%);
             color: #2d3436;
+        }
+
+        .results-container {
+            display: grid;
+            gap: 30px;
+        }
+
+        .team-result-card {
+            background: white;
+            border: 5px solid #000;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.3);
+        }
+
+        .team-result-header {
+            background: linear-gradient(135deg, #FF6B6B 0%, #FF5252 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 15px;
+            border: 4px solid #000;
+            margin-bottom: 20px;
+            font-size: 32px;
+            font-weight: 700;
+            font-family: 'Dongle', cursive;
+            text-align: center;
+        }
+
+        .full-story {
+            background: #FFF9E6;
+            border: 4px solid #000;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            font-size: 20px;
+            line-height: 1.8;
         }
 
         .hidden {
@@ -1003,6 +1130,29 @@
                     <div class="control-panel">
                         <h2 class="panel-title">🎮 제어판</h2>
                         
+                        <!-- 조 개수 설정 -->
+                        <div class="form-group">
+                            <label>🎨 조 개수 (1~10)</label>
+                            <div class="counter-control">
+                                <button class="counter-btn" onclick="changeTeamCount(-1)" id="decreaseTeamBtn">−</button>
+                                <div class="counter-display" id="teamCountDisplay">5</div>
+                                <button class="counter-btn" onclick="changeTeamCount(1)" id="increaseTeamBtn">+</button>
+                            </div>
+                        </div>
+
+                        <!-- 주제 설정 -->
+                        <div class="form-group">
+                            <label>💡 이야기 주제</label>
+                            <textarea id="storyTopic" placeholder="예: 어느 날 우리 반에 외계인이 찾아왔다..."></textarea>
+                        </div>
+                        <button class="btn btn-primary" onclick="setTopic()">🎯 주제 설정</button>
+
+                        <!-- 바퀴수 제한 -->
+                        <div class="form-group small-input">
+                            <label>🔄 바퀴수 제한 (0 = 무제한)</label>
+                            <input type="number" id="maxRounds" value="0" min="0" max="99">
+                        </div>
+                        
                         <!-- 학생 추가 -->
                         <div class="form-group">
                             <label>👤 학생 이름</label>
@@ -1012,11 +1162,6 @@
                             <label>🎨 조 배정</label>
                             <select id="studentTeam">
                                 <option value="">조 선택</option>
-                                <option value="1">1조</option>
-                                <option value="2">2조</option>
-                                <option value="3">3조</option>
-                                <option value="4">4조</option>
-                                <option value="5">5조</option>
                             </select>
                         </div>
                         <button class="btn btn-success" onclick="addStudent()">➕ 학생 추가</button>
@@ -1027,15 +1172,9 @@
                             <div id="studentList" class="student-list"></div>
                         </div>
 
-                        <!-- 주제 설정 -->
-                        <div class="form-group">
-                            <label>💡 이야기 주제</label>
-                            <textarea id="storyTopic" placeholder="예: 어느 날 우리 반에 외계인이 찾아왔다..."></textarea>
-                        </div>
-                        <button class="btn btn-primary" onclick="setTopic()">🎯 주제 설정</button>
-
                         <!-- 게임 제어 -->
                         <button class="btn btn-info" onclick="startGame()">🚀 게임 시작</button>
+                        <button class="btn btn-danger" onclick="endGame()">🏁 게임 종료</button>
                         <button class="btn btn-warning" onclick="resetGame()">🔄 게임 초기화</button>
                     </div>
 
@@ -1062,6 +1201,11 @@
                 <div id="topicDisplay" class="topic-bubble hidden">
                     <div class="topic-label">📖 오늘의 주제</div>
                     <div class="topic-text" id="topicText">-</div>
+                </div>
+
+                <!-- 전체 이야기 보기 버튼 -->
+                <div class="view-all-story-btn">
+                    <button onclick="viewMyTeamStory()">📖 전체 이야기 보기</button>
                 </div>
 
                 <!-- 문장 목록 -->
@@ -1110,8 +1254,28 @@
                 <div id="authorStatsList"></div>
             </div>
 
-            <!-- 이야기 내용 -->
-            <div id="modalStoryContent" class="sentences-container" style="max-height: 500px;"></div>
+            <!-- 전체 이야기 -->
+            <div style="margin-bottom: 20px;">
+                <h3 class="author-stats-title">📖 전체 이야기</h3>
+                <div class="full-story" id="modalFullStory"></div>
+            </div>
+
+            <!-- 문장별 상세 -->
+            <div>
+                <h3 class="author-stats-title">📝 문장별 상세</h3>
+                <div id="modalStoryContent" class="sentences-container" style="max-height: 400px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 게임 종료 결과 모달 -->
+    <div id="resultsModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">🏆 게임 결과</h2>
+                <button class="close-btn" onclick="closeResults()">✕ 닫기</button>
+            </div>
+            <div id="resultsContainer" class="results-container"></div>
         </div>
     </div>
 
@@ -1124,7 +1288,7 @@
 
     <script>
         // Firebase 설정
-const firebaseConfig = {
+     const firebaseConfig = {
   apiKey: "AIzaSyBuTvxrgJIWVhBQtTz3FZWScfE-4tIgUkQ",
   authDomain: "storybook-ad93a.firebaseapp.com",
   databaseURL: "https://storybook-ad93a-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -1145,6 +1309,8 @@ const firebaseConfig = {
 
         let editingMessageId = null;
         let teamMembers = {};
+        let allStudents = [];
+        let teamCount = 5; // 기본값
 
         window.selectRole = function(role) {
             currentUser.role = role;
@@ -1166,6 +1332,7 @@ const firebaseConfig = {
                 currentUser.name = '선생님';
                 showNotification('환영합니다, 선생님! 🎉', 'success');
                 showGameScreen('teacher');
+                loadTeamCount();
                 loadStudents();
                 startMonitoring();
             } else {
@@ -1209,6 +1376,50 @@ const firebaseConfig = {
             }
         }
 
+        // 조 개수 관리
+        function loadTeamCount() {
+            database.ref('game/teamCount').once('value', (snapshot) => {
+                teamCount = snapshot.val() || 5;
+                updateTeamCountDisplay();
+                updateTeamSelectOptions();
+            });
+
+            database.ref('game/teamCount').on('value', (snapshot) => {
+                teamCount = snapshot.val() || 5;
+                updateTeamCountDisplay();
+                updateTeamSelectOptions();
+            });
+        }
+
+        window.changeTeamCount = function(delta) {
+            const newCount = teamCount + delta;
+            if (newCount >= 1 && newCount <= 10) {
+                teamCount = newCount;
+                database.ref('game/teamCount').set(teamCount);
+                updateTeamCountDisplay();
+                updateTeamSelectOptions();
+                showNotification(`조 개수가 ${teamCount}개로 변경되었습니다! ✅`, 'success');
+            }
+        };
+
+        function updateTeamCountDisplay() {
+            document.getElementById('teamCountDisplay').textContent = teamCount + '개조';
+            document.getElementById('decreaseTeamBtn').disabled = teamCount <= 1;
+            document.getElementById('increaseTeamBtn').disabled = teamCount >= 10;
+        }
+
+        function updateTeamSelectOptions() {
+            const select = document.getElementById('studentTeam');
+            select.innerHTML = '<option value="">조 선택</option>';
+            
+            for (let i = 1; i <= teamCount; i++) {
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i + '조';
+                select.appendChild(option);
+            }
+        }
+
         window.addStudent = function() {
             const name = document.getElementById('newStudentName').value.trim();
             const team = document.getElementById('studentTeam').value;
@@ -1239,7 +1450,9 @@ const firebaseConfig = {
                 studentList.innerHTML = '';
 
                 teamMembers = {};
-                Object.values(students).forEach(student => {
+                allStudents = Object.values(students);
+                
+                allStudents.forEach(student => {
                     if (!teamMembers[student.team]) {
                         teamMembers[student.team] = [];
                     }
@@ -1281,12 +1494,19 @@ const firebaseConfig = {
         };
 
         window.startGame = function() {
-            database.ref('game/status').set('playing').then(() => {
-                for (let team = 1; team <= 5; team++) {
+            const maxRounds = parseInt(document.getElementById('maxRounds').value) || 0;
+            
+            database.ref('game').update({
+                status: 'playing',
+                maxRounds: maxRounds,
+                teamCount: teamCount
+            }).then(() => {
+                for (let team = 1; team <= teamCount; team++) {
                     if (teamMembers[team] && teamMembers[team].length > 0) {
                         database.ref(`turnOrder/team${team}`).set({
                             currentTurn: 0,
-                            members: teamMembers[team]
+                            members: teamMembers[team],
+                            maxRounds: maxRounds
                         });
                     }
                 }
@@ -1294,12 +1514,74 @@ const firebaseConfig = {
             });
         };
 
+        window.endGame = function() {
+            if (confirm('게임을 종료하시겠습니까? 결과 화면이 표시됩니다.')) {
+                database.ref('game/status').set('ended').then(() => {
+                    showNotification('게임이 종료되었습니다! 🏁', 'success');
+                    showResults();
+                });
+            }
+        };
+
+        function showResults() {
+            database.ref('stories').once('value', (snapshot) => {
+                const stories = snapshot.val() || {};
+                const resultsContainer = document.getElementById('resultsContainer');
+                resultsContainer.innerHTML = '';
+
+                for (let team = 1; team <= teamCount; team++) {
+                    const teamStories = Object.values(stories).filter(s => s.team == team);
+                    if (teamStories.length === 0) continue;
+
+                    teamStories.sort((a, b) => a.timestamp - b.timestamp);
+
+                    const members = teamMembers[team] || [];
+                    const authorCounts = {};
+                    teamStories.forEach(story => {
+                        authorCounts[story.author] = (authorCounts[story.author] || 0) + 1;
+                    });
+
+                    const card = document.createElement('div');
+                    card.className = 'team-result-card';
+                    
+                    const fullStoryText = teamStories.map(s => s.text).join(' ');
+                    
+                    const statsHTML = Object.entries(authorCounts)
+                        .sort((a, b) => b[1] - a[1])
+                        .map(([author, count]) => `
+                            <div class="author-stat-item">
+                                <span class="author-stat-name">${author}</span>
+                                <span class="author-stat-count">${count}문장</span>
+                            </div>
+                        `).join('');
+
+                    card.innerHTML = `
+                        <div class="team-result-header">${team}조 (${members.join(', ')})</div>
+                        <div class="full-story">${fullStoryText}</div>
+                        <div class="author-stats">
+                            <h3 class="author-stats-title">👥 작성자별 통계</h3>
+                            ${statsHTML}
+                        </div>
+                    `;
+
+                    resultsContainer.appendChild(card);
+                }
+
+                document.getElementById('resultsModal').style.display = 'block';
+            });
+        }
+
+        window.closeResults = function() {
+            document.getElementById('resultsModal').style.display = 'none';
+        };
+
         window.resetGame = function() {
             if (confirm('정말 게임을 초기화하시겠습니까? 모든 내용이 삭제됩니다.')) {
                 database.ref('stories').remove();
                 database.ref('game').update({
                     status: 'waiting',
-                    topic: ''
+                    topic: '',
+                    maxRounds: 0
                 });
                 database.ref('activeWriters').remove();
                 database.ref('turnOrder').remove();
@@ -1326,7 +1608,7 @@ const firebaseConfig = {
                 const monitor = document.getElementById('teamsMonitor');
                 monitor.innerHTML = '';
 
-                for (let team = 1; team <= 5; team++) {
+                for (let team = 1; team <= teamCount; team++) {
                     const teamStories = Object.values(stories).filter(s => s.team == team);
                     
                     const panel = document.createElement('div');
@@ -1334,6 +1616,14 @@ const firebaseConfig = {
                     panel.onclick = () => showTeamDetail(team);
                     
                     const members = teamMembers[team] || [];
+                    const authorCounts = {};
+                    teamStories.forEach(story => {
+                        authorCounts[story.author] = (authorCounts[story.author] || 0) + 1;
+                    });
+
+                    const statsPreview = Object.entries(authorCounts)
+                        .map(([author, count]) => `${author}(${count})`)
+                        .join(', ');
 
                     panel.innerHTML = `
                         <div class="team-badge">${team}조</div>
@@ -1341,10 +1631,13 @@ const firebaseConfig = {
                             <div class="team-members-list">
                                 👥 ${members.join(', ') || '없음'}
                             </div>
+                            <div class="team-members-list" style="color: #5f27cd; font-weight: 700;">
+                                📊 ${statsPreview || '작성 전'}
+                            </div>
                             <div class="story-preview">
                                 ${teamStories.length > 0 ? 
-                                    teamStories.slice(0, 3).map(s => `<p><strong>${s.author}:</strong> ${s.text}</p>`).join('') + 
-                                    (teamStories.length > 3 ? '<p style="color: #95a5a6;">...클릭해서 더보기</p>' : '') :
+                                    teamStories.slice(0, 2).map(s => `<p><strong>${s.author}:</strong> ${s.text}</p>`).join('') + 
+                                    (teamStories.length > 2 ? '<p style="color: #95a5a6; text-align: center; font-weight: 700;">...클릭해서 전체보기</p>' : '') :
                                     '<p style="color: #95a5a6;">아직 작성된 문장이 없습니다.</p>'
                                 }
                             </div>
@@ -1360,7 +1653,7 @@ const firebaseConfig = {
             database.ref('game/status').on('value', (snapshot) => {
                 const status = snapshot.val() || 'waiting';
                 document.getElementById('gameStatus').textContent = 
-                    status === 'playing' ? '진행중 🎮' : '대기중 ⏸️';
+                    status === 'playing' ? '진행중 🎮' : status === 'ended' ? '종료됨 🏁' : '대기중 ⏸️';
             });
         }
 
@@ -1385,6 +1678,9 @@ const firebaseConfig = {
 
                 document.getElementById('modalTotalSentences').textContent = totalSentences;
                 document.getElementById('modalMemberCount').textContent = members.length + '명';
+
+                const fullStoryText = stories.map(s => s.text).join(' ');
+                document.getElementById('modalFullStory').textContent = fullStoryText || '아직 작성된 이야기가 없습니다.';
 
                 const authorStatsList = document.getElementById('authorStatsList');
                 authorStatsList.innerHTML = '';
@@ -1439,16 +1735,29 @@ const firebaseConfig = {
             document.getElementById('teamDetailModal').style.display = 'none';
         };
 
+        window.viewMyTeamStory = function() {
+            showTeamDetail(currentUser.team);
+        };
+
         window.onclick = function(event) {
-            const modal = document.getElementById('teamDetailModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
+            const teamModal = document.getElementById('teamDetailModal');
+            const resultsModal = document.getElementById('resultsModal');
+            if (event.target == teamModal) {
+                teamModal.style.display = 'none';
+            }
+            if (event.target == resultsModal) {
+                resultsModal.style.display = 'none';
             }
         };
 
         function loadTeamStory() {
             const team = currentUser.team;
             document.getElementById('teamTitle').textContent = `${team}조 이야기책 📖`;
+
+            database.ref('students').on('value', (snapshot) => {
+                const students = snapshot.val() || {};
+                updateStudentCount(Object.keys(students).length);
+            });
 
             database.ref('game/topic').on('value', (snapshot) => {
                 const topic = snapshot.val();
@@ -1458,25 +1767,32 @@ const firebaseConfig = {
                 }
             });
 
-            database.ref('stories').orderByChild('team').equalTo(team).on('value', (snapshot) => {
-                const stories = [];
-                snapshot.forEach(child => {
-                    stories.push({...child.val(), id: child.key});
-                });
+            database.ref('game/status').on('value', (snapshot) => {
+                const status = snapshot.val() || 'waiting';
+                document.getElementById('gameStatus').textContent = 
+                    status === 'playing' ? '진행중 🎮' : status === 'ended' ? '종료됨 🏁' : '대기중 ⏸️';
+            });
 
-                stories.sort((a, b) => a.timestamp - b.timestamp);
+            database.ref('stories').on('value', (snapshot) => {
+                const stories = snapshot.val() || {};
+                const allStories = Object.values(stories);
+                const teamStories = allStories.filter(s => s.team == team);
+
+                updateTotalSentences(allStories.length);
+
+                teamStories.sort((a, b) => a.timestamp - b.timestamp);
 
                 const container = document.getElementById('sentencesContainer');
                 container.innerHTML = '';
 
-                stories.forEach(story => {
+                teamStories.forEach(story => {
                     const bubble = document.createElement('div');
                     bubble.className = 'speech-bubble' + (story.author === currentUser.name ? ' my-sentence' : '');
                     bubble.innerHTML = `
                         <div class="author-tag">${story.author}</div>
                         <div class="sentence-text">${story.text}</div>
                         ${story.author === currentUser.name ? 
-                            `<button class="edit-btn" onclick="editSentence('${story.id}', '${story.text.replace(/'/g, "\\'")}')">✏️ 수정</button>` : 
+                            `<button class="edit-btn" onclick="editSentence('${story.id}', \`${story.text}\`)">✏️ 수정</button>` : 
                             ''}
                     `;
                     container.appendChild(bubble);
@@ -1492,46 +1808,63 @@ const firebaseConfig = {
             database.ref(`turnOrder/team${team}`).on('value', (snapshot) => {
                 const turnData = snapshot.val();
                 
-                if (!turnData) {
-                    updateTurnStatus('게임이 시작되기를 기다리는 중...', false, false);
-                    return;
-                }
+                database.ref('game/status').once('value', (statusSnapshot) => {
+                    const gameStatus = statusSnapshot.val();
 
-                const members = turnData.members || [];
-                const currentTurnIndex = turnData.currentTurn || 0;
-                const currentTurnPlayer = members[currentTurnIndex % members.length];
-                const isMyTurn = currentTurnPlayer === currentUser.name;
-
-                database.ref('activeWriters').once('value', (writerSnapshot) => {
-                    const writers = writerSnapshot.val() || {};
-                    const teamWriters = Object.values(writers).filter(w => w.team == team && w.name !== currentUser.name);
-
-                    if (teamWriters.length > 0) {
-                        updateTurnStatus(`${teamWriters[0].name}님이 문장을 쓰고 있어요... ✍️`, false, true);
-                    } else if (isMyTurn) {
-                        updateTurnStatus('✨ 지금은 내 차례예요! 문장을 작성해주세요! 🎉', true, false);
-                    } else {
-                        updateTurnStatus(`${currentTurnPlayer}님의 차례입니다. 잠시만 기다려주세요!`, false, false);
+                    if (gameStatus === 'ended') {
+                        updateTurnStatus('🏁 게임이 종료되었습니다!', false, false);
+                        return;
                     }
-                });
-            });
 
-            database.ref('game/status').on('value', (snapshot) => {
-                const status = snapshot.val();
-                if (status !== 'playing') {
-                    updateTurnStatus('게임이 시작되기를 기다리는 중...', false, false);
-                }
+                    if (!turnData) {
+                        updateTurnStatus('게임이 시작되기를 기다리는 중...', false, false);
+                        return;
+                    }
+
+                    const members = turnData.members || [];
+                    const currentTurnIndex = turnData.currentTurn || 0;
+                    const maxRounds = turnData.maxRounds || 0;
+                    const totalTurns = members.length * maxRounds;
+
+                    if (maxRounds > 0 && currentTurnIndex >= totalTurns) {
+                        updateTurnStatus('🎉 우리 조는 모든 바퀴를 완료했습니다!', false, false, true);
+                        return;
+                    }
+
+                    const currentTurnPlayer = members[currentTurnIndex % members.length];
+                    const isMyTurn = currentTurnPlayer === currentUser.name;
+
+                    const currentRound = Math.floor(currentTurnIndex / members.length) + 1;
+                    const roundInfo = maxRounds > 0 ? ` (${currentRound}/${maxRounds}바퀴)` : '';
+
+                    database.ref('activeWriters').once('value', (writerSnapshot) => {
+                        const writers = writerSnapshot.val() || {};
+                        const teamWriters = Object.values(writers).filter(w => w.team == team && w.name !== currentUser.name);
+
+                        if (teamWriters.length > 0) {
+                            updateTurnStatus(`${teamWriters[0].name}님이 문장을 쓰고 있어요... ✍️${roundInfo}`, false, true);
+                        } else if (isMyTurn) {
+                            updateTurnStatus(`✨ 지금은 내 차례예요! 문장을 작성해주세요! 🎉${roundInfo}`, true, false);
+                        } else {
+                            updateTurnStatus(`${currentTurnPlayer}님의 차례입니다. 잠시만 기다려주세요!${roundInfo}`, false, false);
+                        }
+                    });
+                });
             });
         }
 
-        function updateTurnStatus(message, canWrite, someoneWriting) {
+        function updateTurnStatus(message, canWrite, someoneWriting, completed = false) {
             const status = document.getElementById('writingStatus');
             const input = document.getElementById('storyInput');
             const submitBtn = document.getElementById('submitBtn');
 
             status.textContent = message;
             
-            if (canWrite) {
+            if (completed) {
+                status.className = 'writing-status completed';
+                input.disabled = true;
+                submitBtn.disabled = true;
+            } else if (canWrite) {
                 status.className = 'writing-status my-turn';
                 input.disabled = false;
                 submitBtn.disabled = false;
@@ -1562,6 +1895,14 @@ const firebaseConfig = {
 
                 const members = turnData.members || [];
                 const currentTurnIndex = turnData.currentTurn || 0;
+                const maxRounds = turnData.maxRounds || 0;
+                const totalTurns = members.length * maxRounds;
+
+                if (maxRounds > 0 && currentTurnIndex >= totalTurns) {
+                    showNotification('모든 바퀴를 완료했습니다! 🎉', 'warning');
+                    return;
+                }
+
                 const currentTurnPlayer = members[currentTurnIndex % members.length];
 
                 if (editingMessageId) {
