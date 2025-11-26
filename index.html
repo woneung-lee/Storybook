@@ -520,7 +520,6 @@
             line-height: 1.6;
         }
 
-        /* 모달 스타일 */
         .modal {
             display: none;
             position: fixed;
@@ -1128,10 +1127,10 @@
                 <p class="comic-subtitle">🎨 함께 만드는 신나는 이야기 🎨</p>
                 
                 <div class="role-selection">
-                    <button class="role-btn teacher" onclick="selectRole('teacher')">
+                    <button class="role-btn teacher" id="teacherRoleBtn">
                         👨‍🏫<br>선생님
                     </button>
-                    <button class="role-btn student" onclick="selectRole('student')">
+                    <button class="role-btn student" id="studentRoleBtn">
                         👦<br>학생
                     </button>
                 </div>
@@ -1143,7 +1142,7 @@
                             <label>🔐 비밀번호</label>
                             <input type="password" id="teacherPassword" placeholder="비밀번호를 입력하세요">
                         </div>
-                        <button class="submit-btn" onclick="teacherLogin()">입장하기!</button>
+                        <button class="submit-btn" id="teacherSubmitBtn">입장하기!</button>
                     </div>
 
                     <!-- 학생 로그인 -->
@@ -1152,7 +1151,7 @@
                             <label>👤 내 이름</label>
                             <input type="text" id="studentName" placeholder="이름을 입력하세요">
                         </div>
-                        <button class="submit-btn" onclick="studentLogin()">입장하기!</button>
+                        <button class="submit-btn" id="studentSubmitBtn">입장하기!</button>
                     </div>
                 </div>
             </div>
@@ -1183,7 +1182,7 @@
                         <div class="header-value" id="gameStatus">대기중</div>
                     </div>
                 </div>
-                <button class="btn btn-warning" onclick="logout()" style="width: auto; padding: 10px 30px;">
+                <button class="btn btn-warning" id="logoutBtn" style="width: auto; padding: 10px 30px;">
                     🚪 나가기
                 </button>
             </div>
@@ -1199,9 +1198,9 @@
                         <div class="form-group">
                             <label>🎨 조 개수 (1~10)</label>
                             <div class="counter-control">
-                                <button class="counter-btn" onclick="changeTeamCount(-1)" id="decreaseTeamBtn">−</button>
+                                <button class="counter-btn" id="decreaseTeamBtn">−</button>
                                 <div class="counter-display" id="teamCountDisplay">5</div>
-                                <button class="counter-btn" onclick="changeTeamCount(1)" id="increaseTeamBtn">+</button>
+                                <button class="counter-btn" id="increaseTeamBtn">+</button>
                             </div>
                         </div>
 
@@ -1210,7 +1209,7 @@
                             <label>💡 이야기 주제</label>
                             <textarea id="storyTopic" placeholder="예: 어느 날 우리 반에 외계인이 찾아왔다..."></textarea>
                         </div>
-                        <button class="btn btn-primary" onclick="setTopic()">🎯 주제 설정</button>
+                        <button class="btn btn-primary" id="setTopicBtn">🎯 주제 설정</button>
 
                         <!-- 바퀴수 제한 -->
                         <div class="form-group small-input">
@@ -1229,7 +1228,7 @@
                                 <option value="">조 선택</option>
                             </select>
                         </div>
-                        <button class="btn btn-success" onclick="addStudent()">➕ 학생 추가</button>
+                        <button class="btn btn-success" id="addStudentBtn">➕ 학생 추가</button>
 
                         <!-- 학생 목록 -->
                         <div class="form-group">
@@ -1238,9 +1237,9 @@
                         </div>
 
                         <!-- 게임 제어 -->
-                        <button class="btn btn-info" onclick="startGame()">🚀 게임 시작</button>
-                        <button class="btn btn-danger" onclick="endGame()">🏁 게임 종료</button>
-                        <button class="btn btn-warning" onclick="resetGame()">🔄 게임 초기화</button>
+                        <button class="btn btn-info" id="startGameBtn">🚀 게임 시작</button>
+                        <button class="btn btn-danger" id="endGameBtn">🏁 게임 종료</button>
+                        <button class="btn btn-warning" id="resetGameBtn">🔄 게임 초기화</button>
                     </div>
 
                     <!-- 팀 모니터링 -->
@@ -1270,7 +1269,7 @@
 
                 <!-- 전체 이야기 보기 버튼 -->
                 <div class="view-all-story-btn">
-                    <button onclick="viewMyTeamStory()">📖 전체 이야기 보기</button>
+                    <button id="viewMyTeamStoryBtn">📖 전체 이야기 보기</button>
                 </div>
 
                 <!-- 문장 목록 -->
@@ -1284,7 +1283,7 @@
                     </div>
                     <textarea id="storyInput" class="story-input" placeholder="여기에 한 문장을 적어보세요..." disabled></textarea>
                     <div class="action-buttons">
-                        <button class="btn btn-success" onclick="submitSentence()" id="submitBtn" disabled>
+                        <button class="btn btn-success" id="submitBtn" disabled>
                             📝 문장 제출
                         </button>
                     </div>
@@ -1292,7 +1291,7 @@
 
                 <!-- 학생용 나가기 버튼 -->
                 <div style="text-align: center; margin-top: 20px;">
-                    <button class="btn btn-warning" onclick="logout()" style="width: auto; padding: 10px 30px;">
+                    <button class="btn btn-warning" id="studentLogoutBtn" style="width: auto; padding: 10px 30px;">
                         🚪 나가기
                     </button>
                 </div>
@@ -1305,7 +1304,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title" id="modalTeamTitle">1조 상세보기</h2>
-                <button class="close-btn" onclick="closeTeamDetail()">✕ 닫기</button>
+                <button class="close-btn" id="closeTeamDetailBtn">✕ 닫기</button>
             </div>
 
             <!-- 통계 -->
@@ -1345,7 +1344,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title">🏆 게임 결과</h2>
-                <button class="close-btn" onclick="closeResults()">✕ 닫기</button>
+                <button class="close-btn" id="closeResultsBtn">✕ 닫기</button>
             </div>
 
             <!-- 팀 선택 화면 -->
@@ -1359,7 +1358,7 @@
             <!-- 선택한 팀 결과 화면 -->
             <div id="teamResultView" class="hidden">
                 <div class="back-to-selection-btn">
-                    <button onclick="backToTeamSelection()">⬅️ 조 선택으로 돌아가기</button>
+                    <button id="backToSelectionBtn">⬅️ 조 선택으로 돌아가기</button>
                 </div>
                 <div id="selectedTeamResult"></div>
             </div>
@@ -1374,9 +1373,10 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 
     <script>
+        console.log('=== Script Start ===');
+        
         // Firebase 설정
-        const firebaseConfig = {
- const firebaseConfig = {
+      const firebaseConfig = {
   apiKey: "AIzaSyBuTvxrgJIWVhBQtTz3FZWScfE-4tIgUkQ",
   authDomain: "storybook-ad93a.firebaseapp.com",
   databaseURL: "https://storybook-ad93a-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -1401,22 +1401,86 @@
         let teamCount = 5;
         let allStoriesData = {};
 
-        // 역할 선택 함수
+        // DOM이 로드된 후 이벤트 리스너 등록
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM Content Loaded');
+            
+            // 역할 선택 버튼
+            document.getElementById('teacherRoleBtn').addEventListener('click', function() {
+                console.log('Teacher role button clicked');
+                selectRole('teacher');
+            });
+            
+            document.getElementById('studentRoleBtn').addEventListener('click', function() {
+                console.log('Student role button clicked');
+                selectRole('student');
+            });
+
+            // 로그인 버튼
+            document.getElementById('teacherSubmitBtn').addEventListener('click', teacherLogin);
+            document.getElementById('studentSubmitBtn').addEventListener('click', studentLogin);
+
+            // 나가기 버튼
+            document.getElementById('logoutBtn').addEventListener('click', logout);
+            document.getElementById('studentLogoutBtn').addEventListener('click', logout);
+
+            // 선생님 제어판 버튼들
+            document.getElementById('decreaseTeamBtn').addEventListener('click', () => changeTeamCount(-1));
+            document.getElementById('increaseTeamBtn').addEventListener('click', () => changeTeamCount(1));
+            document.getElementById('setTopicBtn').addEventListener('click', setTopic);
+            document.getElementById('addStudentBtn').addEventListener('click', addStudent);
+            document.getElementById('startGameBtn').addEventListener('click', startGame);
+            document.getElementById('endGameBtn').addEventListener('click', endGame);
+            document.getElementById('resetGameBtn').addEventListener('click', resetGame);
+
+            // 학생 버튼
+            document.getElementById('submitBtn').addEventListener('click', submitSentence);
+            document.getElementById('viewMyTeamStoryBtn').addEventListener('click', viewMyTeamStory);
+
+            // 모달 버튼
+            document.getElementById('closeTeamDetailBtn').addEventListener('click', closeTeamDetail);
+            document.getElementById('closeResultsBtn').addEventListener('click', closeResults);
+            document.getElementById('backToSelectionBtn').addEventListener('click', backToTeamSelection);
+
+            // 학생 입력창 이벤트
+            const storyInput = document.getElementById('storyInput');
+            storyInput.addEventListener('focus', setActiveWriter);
+            storyInput.addEventListener('blur', () => {
+                if (!editingMessageId && !storyInput.value.trim()) {
+                    removeActiveWriter();
+                }
+            });
+
+            // 모달 외부 클릭 시 닫기
+            window.addEventListener('click', function(event) {
+                const teamModal = document.getElementById('teamDetailModal');
+                const resultsModal = document.getElementById('resultsModal');
+                if (event.target == teamModal) {
+                    teamModal.style.display = 'none';
+                }
+                if (event.target == resultsModal) {
+                    resultsModal.style.display = 'none';
+                }
+            });
+        });
+
         function selectRole(role) {
+            console.log('selectRole called with:', role);
             currentUser.role = role;
             
-            // loginForm 보이기
             const loginForm = document.getElementById('loginForm');
-            loginForm.classList.remove('hidden');
-            
-            // 역할에 따라 로그인 폼 표시
             const teacherLogin = document.getElementById('teacherLogin');
             const studentLogin = document.getElementById('studentLogin');
             
+            console.log('Removing hidden from loginForm');
+            loginForm.classList.remove('hidden');
+            
             if (role === 'teacher') {
+                console.log('Showing teacher login');
                 teacherLogin.classList.remove('hidden');
                 studentLogin.classList.add('hidden');
             } else {
+                console.log('Showing student login');
                 studentLogin.classList.remove('hidden');
                 teacherLogin.classList.add('hidden');
             }
@@ -1561,8 +1625,14 @@
                     div.innerHTML = `
                         <span class="student-name">${student.name}</span>
                         <span class="student-team">${student.team}조</span>
-                        <button class="delete-btn" onclick="deleteStudent('${student.id}')">삭제</button>
+                        <button class="delete-btn" data-student-id="${student.id}">삭제</button>
                     `;
+                    
+                    // 삭제 버튼에 이벤트 리스너 추가
+                    div.querySelector('.delete-btn').addEventListener('click', function() {
+                        deleteStudent(this.getAttribute('data-student-id'));
+                    });
+                    
                     studentList.appendChild(div);
                 });
 
@@ -1636,7 +1706,7 @@
                     card.className = 'team-select-card' + (teamStories.length === 0 ? ' disabled' : '');
                     
                     if (teamStories.length > 0) {
-                        card.onclick = () => showTeamResult(team);
+                        card.addEventListener('click', () => showTeamResult(team));
                     }
                     
                     card.innerHTML = `
@@ -1740,7 +1810,7 @@
                     
                     const panel = document.createElement('div');
                     panel.className = 'team-comic-panel';
-                    panel.onclick = () => showTeamDetail(team);
+                    panel.addEventListener('click', () => showTeamDetail(team));
                     
                     const members = teamMembers[team] || [];
                     const authorCounts = {};
@@ -1866,17 +1936,6 @@
             showTeamDetail(currentUser.team);
         }
 
-        window.onclick = function(event) {
-            const teamModal = document.getElementById('teamDetailModal');
-            const resultsModal = document.getElementById('resultsModal');
-            if (event.target == teamModal) {
-                teamModal.style.display = 'none';
-            }
-            if (event.target == resultsModal) {
-                resultsModal.style.display = 'none';
-            }
-        };
-
         function loadTeamStory() {
             const team = currentUser.team;
             document.getElementById('teamTitle').textContent = `${team}조 이야기책 📖`;
@@ -1901,13 +1960,24 @@
                 teamStories.forEach(story => {
                     const bubble = document.createElement('div');
                     bubble.className = 'speech-bubble' + (story.author === currentUser.name ? ' my-sentence' : '');
+                    
+                    const editButton = story.author === currentUser.name ? 
+                        `<button class="edit-btn" data-story-id="${story.id}" data-story-text="${story.text.replace(/"/g, '&quot;')}">✏️ 수정</button>` : 
+                        '';
+                    
                     bubble.innerHTML = `
                         <div class="author-tag">${story.author}</div>
                         <div class="sentence-text">${story.text}</div>
-                        ${story.author === currentUser.name ? 
-                            `<button class="edit-btn" onclick="editSentence('${story.id}', \`${story.text}\`)">✏️ 수정</button>` : 
-                            ''}
+                        ${editButton}
                     `;
+                    
+                    if (story.author === currentUser.name) {
+                        const btn = bubble.querySelector('.edit-btn');
+                        btn.addEventListener('click', function() {
+                            editSentence(this.getAttribute('data-story-id'), this.getAttribute('data-story-text'));
+                        });
+                    }
+                    
                     container.appendChild(bubble);
                 });
 
@@ -2092,18 +2162,6 @@
             });
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const input = document.getElementById('storyInput');
-            if (input) {
-                input.addEventListener('focus', setActiveWriter);
-                input.addEventListener('blur', () => {
-                    if (!editingMessageId && !input.value.trim()) {
-                        removeActiveWriter();
-                    }
-                });
-            }
-        });
-
         function setActiveWriter() {
             if (currentUser.role === 'student') {
                 database.ref('activeWriters/' + currentUser.name.replace(/\./g, '_')).set({
@@ -2151,6 +2209,8 @@
         }
 
         window.addEventListener('beforeunload', removeActiveWriter);
+        
+        console.log('=== Script Setup Complete ===');
     </script>
 </body>
 </html>
