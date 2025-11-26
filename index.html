@@ -1375,15 +1375,15 @@
 
     <script>
         // Firebase 설정
- const firebaseConfig = {
-  apiKey: "AIzaSyBuTvxrgJIWVhBQtTz3FZWScfE-4tIgUkQ",
-  authDomain: "storybook-ad93a.firebaseapp.com",
-  databaseURL: "https://storybook-ad93a-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "storybook-ad93a",
-  storageBucket: "storybook-ad93a.firebasestorage.app",
-  messagingSenderId: "732882396160",
-  appId: "1:732882396160:web:6210b8074c8656aba264e5"
-};
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            databaseURL: "YOUR_DATABASE_URL",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
 
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
@@ -1400,20 +1400,28 @@
         let teamCount = 5;
         let allStoriesData = {};
 
-        window.selectRole = function(role) {
+        // 역할 선택 함수
+        function selectRole(role) {
             currentUser.role = role;
-            document.getElementById('loginForm').classList.remove('hidden');
+            
+            // loginForm 보이기
+            const loginForm = document.getElementById('loginForm');
+            loginForm.classList.remove('hidden');
+            
+            // 역할에 따라 로그인 폼 표시
+            const teacherLogin = document.getElementById('teacherLogin');
+            const studentLogin = document.getElementById('studentLogin');
             
             if (role === 'teacher') {
-                document.getElementById('teacherLogin').classList.remove('hidden');
-                document.getElementById('studentLogin').classList.add('hidden');
+                teacherLogin.classList.remove('hidden');
+                studentLogin.classList.add('hidden');
             } else {
-                document.getElementById('studentLogin').classList.remove('hidden');
-                document.getElementById('teacherLogin').classList.add('hidden');
+                studentLogin.classList.remove('hidden');
+                teacherLogin.classList.add('hidden');
             }
-        };
+        }
 
-        window.teacherLogin = function() {
+        function teacherLogin() {
             const password = document.getElementById('teacherPassword').value;
             
             if (password === 'teacher1234') {
@@ -1426,9 +1434,9 @@
             } else {
                 showNotification('비밀번호가 틀렸습니다! ❌', 'error');
             }
-        };
+        }
 
-        window.studentLogin = function() {
+        function studentLogin() {
             const name = document.getElementById('studentName').value.trim();
             
             if (!name) {
@@ -1451,7 +1459,7 @@
                     showNotification('등록되지 않은 학생입니다! 선생님께 문의하세요. ❌', 'error');
                 }
             });
-        };
+        }
 
         function showGameScreen(role) {
             document.getElementById('loginScreen').style.display = 'none';
@@ -1480,7 +1488,7 @@
             });
         }
 
-        window.changeTeamCount = function(delta) {
+        function changeTeamCount(delta) {
             const newCount = teamCount + delta;
             if (newCount >= 1 && newCount <= 10) {
                 teamCount = newCount;
@@ -1489,7 +1497,7 @@
                 updateTeamSelectOptions();
                 showNotification(`조 개수가 ${teamCount}개로 변경되었습니다! ✅`, 'success');
             }
-        };
+        }
 
         function updateTeamCountDisplay() {
             document.getElementById('teamCountDisplay').textContent = teamCount + '개조';
@@ -1509,7 +1517,7 @@
             }
         }
 
-        window.addStudent = function() {
+        function addStudent() {
             const name = document.getElementById('newStudentName').value.trim();
             const team = document.getElementById('studentTeam').value;
 
@@ -1530,7 +1538,7 @@
                 document.getElementById('studentTeam').value = '';
                 loadStudents();
             });
-        };
+        }
 
         function loadStudents() {
             database.ref('students').on('value', (snapshot) => {
@@ -1561,15 +1569,15 @@
             });
         }
 
-        window.deleteStudent = function(studentId) {
+        function deleteStudent(studentId) {
             if (confirm('정말 삭제하시겠습니까?')) {
                 database.ref('students/' + studentId).remove().then(() => {
                     showNotification('학생이 삭제되었습니다! ✅', 'success');
                 });
             }
-        };
+        }
 
-        window.setTopic = function() {
+        function setTopic() {
             const topic = document.getElementById('storyTopic').value.trim();
             
             if (!topic) {
@@ -1580,9 +1588,9 @@
             database.ref('game/topic').set(topic).then(() => {
                 showNotification('주제가 설정되었습니다! 🎯', 'success');
             });
-        };
+        }
 
-        window.startGame = function() {
+        function startGame() {
             const maxRounds = parseInt(document.getElementById('maxRounds').value) || 0;
             
             database.ref('game').update({
@@ -1601,16 +1609,16 @@
                 }
                 showNotification('게임이 시작되었습니다! 🚀', 'success');
             });
-        };
+        }
 
-        window.endGame = function() {
+        function endGame() {
             if (confirm('게임을 종료하시겠습니까? 결과 화면이 표시됩니다.')) {
                 database.ref('game/status').set('ended').then(() => {
                     showNotification('게임이 종료되었습니다! 🏁', 'success');
                     showResults();
                 });
             }
-        };
+        }
 
         function showResults() {
             database.ref('stories').once('value', (snapshot) => {
@@ -1647,7 +1655,7 @@
             });
         }
 
-        window.showTeamResult = function(team) {
+        function showTeamResult(team) {
             const teamStories = Object.values(allStoriesData).filter(s => s.team == team);
             teamStories.sort((a, b) => a.timestamp - b.timestamp);
 
@@ -1682,18 +1690,18 @@
             document.getElementById('selectedTeamResult').innerHTML = resultHTML;
             document.getElementById('teamSelectionView').classList.add('hidden');
             document.getElementById('teamResultView').classList.remove('hidden');
-        };
+        }
 
-        window.backToTeamSelection = function() {
+        function backToTeamSelection() {
             document.getElementById('teamSelectionView').classList.remove('hidden');
             document.getElementById('teamResultView').classList.add('hidden');
-        };
+        }
 
-        window.closeResults = function() {
+        function closeResults() {
             document.getElementById('resultsModal').style.display = 'none';
-        };
+        }
 
-        window.resetGame = function() {
+        function resetGame() {
             if (confirm('정말 게임을 초기화하시겠습니까? 모든 내용이 삭제됩니다.')) {
                 database.ref('stories').remove();
                 database.ref('game').update({
@@ -1705,7 +1713,7 @@
                 database.ref('turnOrder').remove();
                 showNotification('게임이 초기화되었습니다! 🔄', 'success');
             }
-        };
+        }
 
         function startMonitoring() {
             database.ref('game/topic').on('value', (snapshot) => {
@@ -1775,7 +1783,7 @@
             });
         }
 
-        window.showTeamDetail = function(team) {
+        function showTeamDetail(team) {
             document.getElementById('modalTeamTitle').textContent = `${team}조 상세보기`;
             
             database.ref('stories').orderByChild('team').equalTo(team).once('value', (snapshot) => {
@@ -1847,15 +1855,15 @@
 
                 document.getElementById('teamDetailModal').style.display = 'block';
             });
-        };
+        }
 
-        window.closeTeamDetail = function() {
+        function closeTeamDetail() {
             document.getElementById('teamDetailModal').style.display = 'none';
-        };
+        }
 
-        window.viewMyTeamStory = function() {
+        function viewMyTeamStory() {
             showTeamDetail(currentUser.team);
-        };
+        }
 
         window.onclick = function(event) {
             const teamModal = document.getElementById('teamDetailModal');
@@ -1983,7 +1991,7 @@
             }
         }
 
-        window.submitSentence = function() {
+        function submitSentence() {
             const text = document.getElementById('storyInput').value.trim();
             
             if (!text) {
@@ -2047,9 +2055,9 @@
                     });
                 }
             });
-        };
+        }
 
-        window.editSentence = function(id, text) {
+        function editSentence(id, text) {
             const team = currentUser.team;
 
             database.ref(`turnOrder/team${team}`).once('value', (turnSnapshot) => {
@@ -2081,7 +2089,7 @@
                     showNotification('문장을 수정하고 제출 버튼을 눌러주세요! ✏️', 'success');
                 });
             });
-        };
+        }
 
         document.addEventListener('DOMContentLoaded', () => {
             const input = document.getElementById('storyInput');
@@ -2134,12 +2142,12 @@
             }, 3000);
         }
 
-        window.logout = function() {
+        function logout() {
             if (confirm('정말 나가시겠습니까?')) {
                 removeActiveWriter();
                 location.reload();
             }
-        };
+        }
 
         window.addEventListener('beforeunload', removeActiveWriter);
     </script>
