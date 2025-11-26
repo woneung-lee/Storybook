@@ -203,7 +203,7 @@ function updateTeamSelectOptions() {
 
 function addStudent() {
     const name = document.getElementById('newStudentName').value.trim();
-    const team = document.getElementById('studentTeam').value;
+    const team = parseInt(document.getElementById('studentTeam').value);
 
     if (!name || !team) {
         showNotification('이름과 조를 모두 입력해주세요! 📝', 'error');
@@ -214,7 +214,7 @@ function addStudent() {
     database.ref('students/' + studentId).set({
         id: studentId,
         name: name,
-        team: team,
+        team: team,  // 이제 숫자로 저장됨
         createdAt: Date.now()
     }).then(() => {
         showNotification(`${name} 학생이 ${team}조에 추가되었습니다! ✅`, 'success');
@@ -473,30 +473,46 @@ function startMonitoring() {
 }
 
 function showTeamDetail(team) {
+    console.log('showTeamDetail 호출, team:', team, 'type:', typeof team);
     currentModalTeam = team;
     document.getElementById('modalTeamTitle').textContent = `${team}조 상세보기`;
     
     // 이전 리스너 제거
     if (teamDetailListener) {
-        database.ref('stories').off('value', teamDetailListener);
+        teamDetailListener.off('value');
     }
     
-    // 실시간 리스너 설정
-    teamDetailListener = database.ref('stories').orderByChild('team').equalTo(team).on('value', (snapshot) => {
+    // 실시간 리스너 설정 - 모든 stories를 가져와서 클라이언트에서 필터링
+    teamDetailListener = database.ref('stories');
+    
+    teamDetailListener.on('value', (snapshot) => {
+        console.log('Firebase 전체 데이터 수신');
+        const allStories = snapshot.val() || {};
+        console.log('전체 스토리:', allStories);
+        
         const stories = [];
-        snapshot.forEach(child => {
-            stories.push({...child.val(), id: child.key});
+        Object.values(allStories).forEach(story => {
+            console.log('스토리 체크:', story, 'story.team:', story.team, 'type:', typeof story.team, 'team:', team, 'type:', typeof team, 'match:', story.team == team);
+            // == 사용해서 타입 강제 변환
+            if (story.team == team) {
+                stories.push(story);
+            }
         });
 
+        console.log(`${team}조 스토리 개수:`, stories.length);
         stories.sort((a, b) => a.timestamp - b.timestamp);
 
         const totalSentences = stories.length;
         const members = teamMembers[team] || [];
+        console.log('팀 멤버:', members);
+        
         const authorCounts = {};
 
         stories.forEach(story => {
             authorCounts[story.author] = (authorCounts[story.author] || 0) + 1;
         });
+        
+        console.log('작성자별 통계:', authorCounts);
 
         document.getElementById('modalTotalSentences').textContent = totalSentences;
         document.getElementById('modalMemberCount').textContent = members.length + '명';
@@ -558,7 +574,7 @@ function showTeamDetail(team) {
 function closeTeamDetail() {
     // Firebase 리스너 제거
     if (teamDetailListener) {
-        database.ref('stories').off('value', teamDetailListener);
+        teamDetailListener.off('value');
         teamDetailListener = null;
     }
     currentModalTeam = null;
