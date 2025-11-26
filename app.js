@@ -23,6 +23,8 @@ let teamMembers = {};
 let allStudents = [];
 let teamCount = 5;
 let allStoriesData = {};
+let currentModalTeam = null;
+let teamDetailListener = null;
 
 // DOM이 로드된 후 이벤트 리스너 등록
 document.addEventListener('DOMContentLoaded', function() {
@@ -77,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const teamModal = document.getElementById('teamDetailModal');
         const resultsModal = document.getElementById('resultsModal');
         if (event.target == teamModal) {
-            teamModal.style.display = 'none';
+            closeTeamDetail(); // 리스너 제거를 포함한 함수 사용
         }
         if (event.target == resultsModal) {
             resultsModal.style.display = 'none';
@@ -471,9 +473,16 @@ function startMonitoring() {
 }
 
 function showTeamDetail(team) {
+    currentModalTeam = team;
     document.getElementById('modalTeamTitle').textContent = `${team}조 상세보기`;
     
-    database.ref('stories').orderByChild('team').equalTo(team).once('value', (snapshot) => {
+    // 이전 리스너 제거
+    if (teamDetailListener) {
+        database.ref('stories').off('value', teamDetailListener);
+    }
+    
+    // 실시간 리스너 설정
+    teamDetailListener = database.ref('stories').orderByChild('team').equalTo(team).on('value', (snapshot) => {
         const stories = [];
         snapshot.forEach(child => {
             stories.push({...child.val(), id: child.key});
@@ -541,12 +550,18 @@ function showTeamDetail(team) {
         if (stories.length === 0) {
             content.innerHTML = '<p style="text-align: center; color: #95a5a6; padding: 40px;">아직 작성된 문장이 없습니다.</p>';
         }
-
-        document.getElementById('teamDetailModal').style.display = 'block';
     });
+
+    document.getElementById('teamDetailModal').style.display = 'block';
 }
 
 function closeTeamDetail() {
+    // Firebase 리스너 제거
+    if (teamDetailListener) {
+        database.ref('stories').off('value', teamDetailListener);
+        teamDetailListener = null;
+    }
+    currentModalTeam = null;
     document.getElementById('teamDetailModal').style.display = 'none';
 }
 
